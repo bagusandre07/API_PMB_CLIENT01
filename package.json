@@ -2,7 +2,7 @@
   "name": "andreskak25",
   "version": "1.0.0",
   "description": "api_for_verification",
-  "main": "node server.js",
+  "start": "node server.js",
   "TZ": "Asia/Jakarta ",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
