@@ -34,7 +34,7 @@ transporter.use('compile',hbs(handlebarsOption));
 
 router.post('/register', (req, res) => {
 var params = req.query;
-const otp = `${Math.floor(1000 + Math.random() * 60000)}`
+const otp = `${Math.floor(1000 + Math.random() * 60000)}`;
 var otpsend = otp;
 var query = "insert into users(username,password,status) values(?,?,0)";
 var query2 = "insert into code(username,code,expired) values(?,?,?)";
@@ -147,10 +147,42 @@ router.post('/login', (req, res) => {
         }else{
             res.send(err);
         }
-     })
+     });
 
-
-     
+   
 
 });
+
+
+
+     router.post('/generate', (req, res) => {
+        const otp = `${Math.floor(1000 + Math.random() * 60000)}`;
+        var otpnew = otp;
+        var expired = new   Date(Date.now() + 300000)
+        var params = req.query;
+    var query2 = "insert into code(username,code,expired) values(?,?,?)";
+    database.query(query2,[params.email,otpnew,expired],(err,rows)=>{
+if (!err) {
+  res.status(200).json({status:200,message:"new code generated check your email"})
+}else{
+  res.status(401).json(res)
+}
+    })
+
+       
+    
+     });
+
+router.delete('/deleteotp', (req, res) => {
+    var query2 = "delete from code where username=?";
+
+    var params = req.query;
+    database.query(query2,[params.email],(err,rows)=>{
+        if (!err) {
+            res.status(200).json({status:200,message:"succesfully deleted"})
+        }
+    })
+
+});
+    
 module.exports = router;    
